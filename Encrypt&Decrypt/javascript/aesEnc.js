@@ -55,6 +55,3 @@ aesEnc.init( form );
 ...
 form.submit();
 
-
-
-
