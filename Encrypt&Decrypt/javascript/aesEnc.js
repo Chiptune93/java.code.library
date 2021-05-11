@@ -1,8 +1,8 @@
 ## javascript Encrypt logic
-## encrypt each form element value 
+## encrypt each form element value -> create new form and set encrypt value for submit new Encrypt Form 
 
 var aesEnc = {
-	init : function ( form ) {
+	init : function ( form ,actionType ) {
 		console.log( "──────── AES ENC ────────" );
 		// required key
 		// in this case, use jsessionid & session storage
@@ -31,27 +31,38 @@ var aesEnc = {
 		return true;
 	} ,
 	encData : function ( form ,iv ,key ) {
-		console.log( form.serialize() );
+		// append new form
+		$( body ).append( '<form name="encAppendForm" id="encAppendForm"></form>' );
+		// add enc yn
+		$( "#encAppendForm" ).append( '<input type="hidden" name="enc" value="Y"/>' );
 		for ( var i = 0 ; i < form.serializeArray().length ; i++ ) {
 			var name = form.serializeArray()[ i ].name;
-			console.log( name );
-			console.log( form.find( "[name='" + name + "']" ) );
-			console.log( CryptoJS.AES.encrypt( form.serializeArray()[ i ].value ,key ,{
+			var type = form.find( "[name='" + name + "']" ).prop( "type" );
+			var val = form.serializeArray()[ i ].value;
+			var esp_val = "libart_" + form.serializeArray()[ i ].value;
+			var encVal = CryptoJS.AES.encrypt( val ,key ,{
 				iv : iv
-			} ).ciphertext.toString( CryptoJS.enc.Base64 ) );
-			form.find( "[name='" + name + "']" ).val( CryptoJS.AES.encrypt( form.serializeArray()[ i ].value ,key ,{
-				iv : iv
-			} ).ciphertext.toString( CryptoJS.enc.Base64 ) );
+			} ).ciphertext.toString( CryptoJS.enc.Base64 );
+			// make encVal to hidden Form value and append encForm
+			aesEnc.appendFormData( name ,encVal );
 		}
-		form.append( '<input type="hidden" name="enc" value="Y"/>' );
+	} ,
+	appendFormData : function ( name ,val ) {
+		// append form function
+		var encForm = $( "#encAppendForm" );
+		encForm.append( '<input type="hidden" name="' + name + '" value="' + val + '" />' );
+	} ,
+	submitEncForm : function ( url ) {
+		// replace original form submit function
+		$( "#encAppendForm" ).attr( "action" ,url );
+		$( "#encAppendForm" ).submit();
 	}
 }
-
 
 ## how to use
 ## need parameter form element
 ...
 aesEnc.init( form );
 ...
-form.submit();
+aesEnc.submitEncForm( url );
 
