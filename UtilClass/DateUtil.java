@@ -8,11 +8,7 @@ import java.util.Locale;
 
 import com.adt.ACaaS.core.lib.MyMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class DateUtil {
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -35,8 +31,6 @@ public class DateUtil {
             cal.add(Calendar.DAY_OF_MONTH, (-7 * pastCnt));
         }
         cal.add(Calendar.DATE, 2 - cal.get(Calendar.DAY_OF_WEEK));
-        logger.debug("getWeekDayStartPoint : " + cal.getTime());
-        logger.debug("getWeekDayStartPoint : " + sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }
 
@@ -59,8 +53,6 @@ public class DateUtil {
             cal.add(Calendar.DAY_OF_MONTH, (-7 * pastCnt));
         }
         cal.add(Calendar.DATE, 8 - cal.get(Calendar.DAY_OF_WEEK));
-        logger.debug("getWeekDayEndPoint : " + cal.getTime());
-        logger.debug("getWeekDayEndPoint : " + sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }
 
@@ -83,8 +75,6 @@ public class DateUtil {
             cal.add(Calendar.MONTH, (-1 * pastCnt));
         }
         cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DAY_OF_MONTH));
-        logger.debug("getMonthDayStartPoint : " + cal.getTime());
-        logger.debug("getMonthDayStartPoint : " + sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }
 
@@ -107,8 +97,6 @@ public class DateUtil {
             cal.add(Calendar.MONTH, (-1 * pastCnt));
         }
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        logger.debug("getMonthDayEndPoint : " + cal.getTime());
-        logger.debug("getMonthDayEndPoint : " + sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }
 
