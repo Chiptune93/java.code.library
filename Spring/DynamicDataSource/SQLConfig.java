@@ -24,7 +24,7 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@MapperScan(basePackages = "com.adt.ACaaS.intAttendance.repo.postgreSQL")
+@MapperScan(basePackages = "com.package.sql")
 @EnableTransactionManagement
 public class PostgreSQLConfig {
 
