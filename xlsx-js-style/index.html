@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+        integrity="sha512-jGR1T3dQerLCSm/IGEGbndPwzszJBlKQ5Br9vuB0Pw2iyxOy+7AK+lJcCC8eaXyz/9du+bkCy4HXxByhxkHf+w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="./dist/xlsx.bundle.js"></script>
+    <script type="text/javascript" src="./dist/xlsx.extendscript.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("test");
+        });
+        function test1() {
+            // workBook Create
+            var wb = XLSX.utils.book_new();
+            // workSheet Create
+            var ws = XLSX.utils.table_to_sheet(document.getElementById('test'));
+            // Sheet Append With Title
+            XLSX.utils.book_append_sheet(wb, ws, 'sheet title');
+            // Create Excel File With File Name
+            XLSX.writeFile(wb, ('파일명.xlsx'));
+        }
+        function test2() {
+            // workBook Create
+            var wb = XLSX.utils.book_new();
+            // workSheet Create
+            var ws = XLSX.utils.table_to_sheet(document.getElementById('test'));
+            // for in Cells add style
+            for (i in ws) {
+                if (typeof (ws[i]) != "object") continue;
+                let cell = XLSX.utils.decode_cell(i);
+                // add Style to All Cells
+                ws[i].s = {
+                    font: {
+                        name: "arial"
+                    },
+                    alignment: {
+                        vertical: "center",
+                        horizontal: "center",
+                        wrapText: '1',
+                    },
+                    border: {
+                        right: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                        left: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                        top: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                        bottom: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                    }
+                };
+                // Cell format change
+                /* if ( cell.c == 0 ) { // first column
+                    ws[ i ].s.numFmt = "DD/MM/YYYY HH:MM"; // for dates
+                    ws[ i ].z = "DD/MM/YYYY HH:MM";
+                } else {
+                    ws[ i ].s.numFmt = "00.00"; // other numbers
+                } */
+                // First row is filled gray bg
+                if (cell.r == 0) {
+                    ws[i].s.fill = {
+                        patternType: "solid",
+                        fgColor: {
+                            rgb: "b2b2b2"
+                        },
+                        bgColor: {
+                            rgb: "b2b2b2"
+                        }
+                    };
+                }
+            }
+            // Sheet Append With Title
+            XLSX.utils.book_append_sheet(wb, ws, 'sheet title');
+            // Create Excel File With File Name
+            XLSX.writeFile(wb, ('파일명.xlsx'));
+        }
+        function test3() {
+            // Create WorkBook
+            var wb = XLSX.utils.book_new();
+            // Define Option
+            var opt = {
+                // new row except table element
+                rowIndex: 1,
+                // merge option ( if you have to merge new row )
+                merges: [{
+                    // start
+                    s: {
+                        c: 0, // col
+                        r: 0	// row
+                    },
+                    // end
+                    e: {
+                        c: $("#test").find("th").length - 1, // col ( this means : merge as table column counts )
+                        r: 0 // row
+                    }
+                }],
+            };
+            // WorkSheet
+            var ws = XLSX2.utils.table_to_sheet(document.getElementById('test'), opt);
+            // new row --> Title
+            ws["A1"] = {
+                t: "s",
+                v: "CUSTOM TITLE"
+            };
+            // new row --> style
+            ws["A1"].s = {
+                font: {
+                    name: "arial",
+                    bold: true,
+                },
+                alignment: {
+                    vertical: "center",
+                    horizontal: "center",
+                    wrapText: '1', // any truthy value here
+                },
+                border: {
+                    right: {
+                        style: "thin",
+                        color: "000000"
+                    },
+                    left: {
+                        style: "thin",
+                        color: "000000"
+                    },
+                    top: {
+                        style: "thin",
+                        color: "000000"
+                    },
+                },
+            };
+            // cell style
+            for (i in ws) {
+                if (typeof (ws[i]) != "object") continue;
+                let cell = XLSX.utils.decode_cell(i);
+                // cell style
+                console.log(cell)
+                console.log(i)
+                console.log(ws[i])
+
+                ws[i].s = {
+                    font: {
+                        name: "arial"
+                    },
+                    alignment: {
+                        vertical: "center",
+                        horizontal: "center",
+                        wrapText: '1',
+                    },
+                    border: {
+                        right: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                        left: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                        top: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                        bottom: {
+                            style: "thin",
+                            color: "000000"
+                        },
+                    }
+                };
+                // new row & first row ( table th ) style
+                if (cell.r == 0 || cell.r == 1) {
+                    ws[i].s.fill = {
+                        patternType: "solid",
+                        fgColor: {
+                            rgb: "b2b2b2"
+                        },
+                        bgColor: {
+                            rgb: "b2b2b2"
+                        }
+                    };
+                }
+                // if you merge other rows use this
+                /* if ( i == "!merges" ) {
+                    ws[ "!merges" ].push( {
+                        s : {
+                            c : 0 ,
+                            r : 0
+                        } ,
+                        e : {
+                            c : 0 ,
+                            r : 0
+                        }
+                    } );
+                } */
+            }
+            // Sheet Append With Title
+            XLSX.utils.book_append_sheet(wb, ws, 'sheet title');
+            // Create Excel File With File Name
+            XLSX.writeFile(wb, ('파일명.xlsx'));
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test1();">
+            <span>엑셀 다운로드1</span>
+        </a>
+        <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test2();">
+            <span>엑셀 다운로드2</span>
+        </a>
+        <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test3();">
+            <span>엑셀 다운로드3</span>
+        </a>
+        <div class="table_wrap pc_view">
+            <table class="table t_list" id="test">
+                <thead>
+                    <tr>
+                        <th>항목1</th>
+                        <th>항목2</th>
+                        <th>항목3</th>
+                        <th>항목4</th>
+                        <th>항목5</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                </tr>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
