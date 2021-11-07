@@ -14,8 +14,46 @@
     <script>
         $(document).ready(function () {
             console.log("test");
+            var n = 1000;
+            for (var i = 0; i < n; i++) {
+                var str = "<tr>" +
+                    "<td>" + i + "</td>" +
+                    "<td>항목1</td>" +
+                    "<td>항목2</td>" +
+                    "<td>항목3</td>" +
+                    "<td>항목4</td>" +
+                    "<td>항목5</td>" +
+                    "<td>항목6</td>" +
+                    "<td>항목7</td>" +
+                    "<td>항목8</td>" +
+                    "<td>항목9</td>" +
+                    "<td>항목10</td>" +
+                    "<td>항목11</td>" +
+                    "<td>항목12</td>" +
+                    "<td>항목13</td>" +
+                    "<td>항목14</td>" +
+                    "<td>항목15</td>" +
+                    "<td>항목16</td>" +
+                    "<td>항목17</td>" +
+                    "<td>항목18</td>" +
+                    "<td>항목19</td>" +
+                    "<td>항목20</td>" +
+                    "<td>항목21</td>" +
+                    "<td>항목22</td>" +
+                    "<td>항목23</td>" +
+                    "<td>항목24</td>" +
+                    "<td>항목25</td>" +
+                    "<td>항목26</td>" +
+                    "<td>항목27</td>" +
+                    "<td>항목28</td>" +
+                    "<td>항목29</td>" +
+                    "<td>항목30</td>" +
+                    "</tr>";
+                $("#test").find("tbody").append(str)
+            }
         });
         function test1() {
+            console.time('excel 1 download time');
             // workBook Create
             var wb = XLSX.utils.book_new();
             // workSheet Create
@@ -24,8 +62,10 @@
             XLSX.utils.book_append_sheet(wb, ws, 'sheet title');
             // Create Excel File With File Name
             XLSX.writeFile(wb, ('파일명.xlsx'));
+            console.time('excel 1 download time');
         }
         function test2() {
+            console.time('excel 2 download time');
             // workBook Create
             var wb = XLSX.utils.book_new();
             // workSheet Create
@@ -87,8 +127,10 @@
             XLSX.utils.book_append_sheet(wb, ws, 'sheet title');
             // Create Excel File With File Name
             XLSX.writeFile(wb, ('파일명.xlsx'));
+            console.time('excel 2 download time');
         }
         function test3() {
+            console.time('excel 3 download time');
             // Create WorkBook
             var wb = XLSX.utils.book_new();
             // Define Option
@@ -147,10 +189,6 @@
                 if (typeof (ws[i]) != "object") continue;
                 let cell = XLSX.utils.decode_cell(i);
                 // cell style
-                console.log(cell)
-                console.log(i)
-                console.log(ws[i])
-
                 ws[i].s = {
                     font: {
                         name: "arial"
@@ -209,6 +247,7 @@
             XLSX.utils.book_append_sheet(wb, ws, 'sheet title');
             // Create Excel File With File Name
             XLSX.writeFile(wb, ('파일명.xlsx'));
+            console.timeEnd('excel 3 download time');
         }
     </script>
 </head>
@@ -228,20 +267,39 @@
             <table class="table t_list" id="test">
                 <thead>
                     <tr>
+                        <th>번호</th>
                         <th>항목1</th>
                         <th>항목2</th>
                         <th>항목3</th>
                         <th>항목4</th>
                         <th>항목5</th>
+                        <th>항목6</th>
+                        <th>항목7</th>
+                        <th>항목8</th>
+                        <th>항목9</th>
+                        <th>항목10</th>
+                        <th>항목11</th>
+                        <th>항목12</th>
+                        <th>항목13</th>
+                        <th>항목14</th>
+                        <th>항목15</th>
+                        <th>항목16</th>
+                        <th>항목17</th>
+                        <th>항목18</th>
+                        <th>항목19</th>
+                        <th>항목20</th>
+                        <th>항목21</th>
+                        <th>항목22</th>
+                        <th>항목23</th>
+                        <th>항목24</th>
+                        <th>항목25</th>
+                        <th>항목26</th>
+                        <th>항목27</th>
+                        <th>항목28</th>
+                        <th>항목29</th>
+                        <th>항목30</th>
                     </tr>
                 </thead>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                </tr>
                 <tbody>
                 </tbody>
             </table>
