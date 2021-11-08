@@ -1,5 +1,5 @@
-# javaUtils
-xlsx-js-style 
+# xlsx-js-style 
+from xlsx-js-style 
 
 dom table to excel sheet example
 
