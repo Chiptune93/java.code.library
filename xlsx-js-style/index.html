@@ -11,6 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="./dist/xlsx.bundle.js"></script>
     <script type="text/javascript" src="./dist/xlsx.extendscript.js"></script>
+    <script type="text/javascript" src="./dist/xlsx.download.js"></script>
     <script>
         $(document).ready(function () {
             console.log("test");
@@ -148,7 +149,7 @@
                     },
                     // end
                     e: {
-                        c: $("#test").find("th").length - 1 - exceptColumn.length , // col ( this means : merge as table column counts )
+                        c: $("#test").find("th").length - 1 - exceptColumn.length, // col ( this means : merge as table column counts )
                         r: 0 // row
                     }
                 }],
@@ -264,6 +265,10 @@
         </a>
         <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test3([10,12]);">
             <span>엑셀 다운로드3</span>
+        </a>
+        <a href="#" class="btn01 col04" title="엑셀 다운로드"
+            onclick="xlsx_.download('test','test 파일','excel download','Sheet1');">
+            <span>엑셀 다운로드 final</span>
         </a>
         <div class="table_wrap pc_view">
             <table class="table t_list" id="test">
