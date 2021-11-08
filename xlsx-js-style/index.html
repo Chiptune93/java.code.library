@@ -129,7 +129,7 @@
             XLSX.writeFile(wb, ('파일명.xlsx'));
             console.time('excel 2 download time');
         }
-        function test3() {
+        function test3(exceptColumn) {
             console.time('excel 3 download time');
             // Create WorkBook
             var wb = XLSX.utils.book_new();
@@ -137,6 +137,8 @@
             var opt = {
                 // new row except table element
                 rowIndex: 1,
+                // if you want excpet column use this option, use Array [0,1,2 ... ]
+                exceptColumn: exceptColumn,
                 // merge option ( if you have to merge new row )
                 merges: [{
                     // start
@@ -146,7 +148,7 @@
                     },
                     // end
                     e: {
-                        c: $("#test").find("th").length - 1, // col ( this means : merge as table column counts )
+                        c: $("#test").find("th").length - 1 - exceptColumn.length , // col ( this means : merge as table column counts )
                         r: 0 // row
                     }
                 }],
@@ -260,7 +262,7 @@
         <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test2();">
             <span>엑셀 다운로드2</span>
         </a>
-        <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test3();">
+        <a href="#" class="btn01 col04" title="엑셀 다운로드" onclick="test3([10,12]);">
             <span>엑셀 다운로드3</span>
         </a>
         <div class="table_wrap pc_view">

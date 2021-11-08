@@ -28532,6 +28532,8 @@ function parse_dom_table(table, _opts) {
 	var range = {s:{r:0,c:0},e:{r:0,c:0}};
 	var merges = _opts ? _opts.merges : [] || [], midx = 0;
 	var rowinfo = [];
+  // exceptColumn
+  var exceptColumn = _opts.exceptColumn ? _opts.exceptColumn : [];
 	/*var _R = 0, R = 0, _C = 0, C = 0, RS = 0, CS = 0;*/
 	var _R = 0, R = _opts ? _opts.rowIndex : 0 || 0, _C, C, RS, CS;
 	for(; _R < rows.length && R < sheetRows; ++_R) {
@@ -28542,34 +28544,38 @@ function parse_dom_table(table, _opts) {
 		}
 		var elts = (row.children);
 		for(_C = C = 0; _C < elts.length; ++_C) {
-			var elt = elts[_C];
-			if (opts.display && is_dom_element_hidden(elt)) continue;
-			var v = htmldecode(elt.innerHTML);
-			for(midx = 0; midx < merges.length; ++midx) {
-				var m = merges[midx];
-				if(m.s.c == C && m.s.r <= R && R <= m.e.r) { C = m.e.c+1; midx = -1; }
-			}
-			/* TODO: figure out how to extract nonstandard mso- style */
-			CS = +elt.getAttribute("colspan") || 1;
-			if((RS = +elt.getAttribute("rowspan"))>0 || CS>1) merges.push({s:{r:R,c:C},e:{r:R + (RS||1) - 1, c:C + CS - 1}});
-			var o = {t:'s', v:v};
-			var _t = elt.getAttribute("t") || "";
-			if(v != null) {
-				if(v.length == 0) o.t = _t || 'z';
-				else if(opts.raw || v.trim().length == 0 || _t == "s"){}
-				else if(v === 'TRUE') o = {t:'b', v:true};
-				else if(v === 'FALSE') o = {t:'b', v:false};
-				else if(!isNaN(fuzzynum(v))) o = {t:'n', v:fuzzynum(v)};
-				else if(!isNaN(fuzzydate(v).getDate())) {
-					o = ({t:'d', v:parseDate(v)});
-					if(!opts.cellDates) o = ({t:'n', v:datenum(o.v)});
-					o.z = opts.dateNF || SSF._table[14];
-				}
-			}
-			if(opts.dense) { if(!ws[R]) ws[R] = []; ws[R][C] = o; }
-			else ws[encode_cell({c:C, r:R})] = o;
-			if(range.e.c < C) range.e.c = C;
-			C += CS;
+      if ( exceptColumn.includes(_C) ) {
+        // except Rows
+			} else {
+        var elt = elts[_C];
+        if (opts.display && is_dom_element_hidden(elt)) continue;
+        var v = htmldecode(elt.innerHTML);
+        for(midx = 0; midx < merges.length; ++midx) {
+          var m = merges[midx];
+          if(m.s.c == C && m.s.r <= R && R <= m.e.r) { C = m.e.c+1; midx = -1; }
+        }
+        /* TODO: figure out how to extract nonstandard mso- style */
+        CS = +elt.getAttribute("colspan") || 1;
+        if((RS = +elt.getAttribute("rowspan"))>0 || CS>1) merges.push({s:{r:R,c:C},e:{r:R + (RS||1) - 1, c:C + CS - 1}});
+        var o = {t:'s', v:v};
+        var _t = elt.getAttribute("t") || "";
+        if(v != null) {
+          if(v.length == 0) o.t = _t || 'z';
+          else if(opts.raw || v.trim().length == 0 || _t == "s"){}
+          else if(v === 'TRUE') o = {t:'b', v:true};
+          else if(v === 'FALSE') o = {t:'b', v:false};
+          else if(!isNaN(fuzzynum(v))) o = {t:'n', v:fuzzynum(v)};
+          else if(!isNaN(fuzzydate(v).getDate())) {
+            o = ({t:'d', v:parseDate(v)});
+            if(!opts.cellDates) o = ({t:'n', v:datenum(o.v)});
+            o.z = opts.dateNF || SSF._table[14];
+          }
+        }
+        if(opts.dense) { if(!ws[R]) ws[R] = []; ws[R][C] = o; }
+        else ws[encode_cell({c:C, r:R})] = o;
+        if(range.e.c < C) range.e.c = C;
+        C += CS;
+      }
 		}
 		++R;
 	}
