@@ -1,12 +1,15 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import matcher.FormattedDateMatcher;
 
@@ -30,6 +33,9 @@ public class TimeUtil {
     private static SimpleDateFormat df_d = new SimpleDateFormat(DF_DATE);
     private static DateTimeFormatter dtf_d = DateTimeFormatter.ofPattern(DF_DATE);
     private static SimpleDateFormat df_t = new SimpleDateFormat(DF_TIME);
+    private static String DF_DATE2 = "yyyy.MM.dd";
+    private static SimpleDateFormat df_d2 = new SimpleDateFormat(DF_DATE2);
+    private static DateTimeFormatter dtf_d2 = DateTimeFormatter.ofPattern(DF_DATE2);
 
     /**
      * date -> millisecond
@@ -97,7 +103,40 @@ public class TimeUtil {
      * @param date
      * @return
      */
+    public static LocalDate stringToLocalDate(String date) {
+        Pattern p = Pattern.compile(
+                "^(19[0-9]{2}|2[0-9]{3}).(0[1-9]|1[012]).([123]0|[012][1-9]|31)$");
+        Matcher m = p.matcher(date);
+        if (!m.matches()) {
+            return null;
+        }
+        LocalDate ldt = LocalDate.parse(date, dtf_d2);
+        return ldt;
+    }
+
+    /**
+     * LocalDateTime --> String
+     * 
+     * @param ldt
+     * @return
+     */
+    public static String localDateToString(LocalDate ldt) {
+        return ldt.format(dtf_d2);
+    }
+
+    /**
+     * String --> LocalDateTime
+     * 
+     * @param date
+     * @return
+     */
     public static LocalDateTime stringToLocalDateTime(String date) {
+        Pattern p = Pattern.compile(
+                "^(19[0-9]{2}|2[0-9]{3}).(0[1-9]|1[012]).([123]0|[012][1-9]|31) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$");
+        Matcher m = p.matcher(date);
+        if (!m.matches()) {
+            date += ":00";
+        }
         LocalDateTime ldt = LocalDateTime.parse(date, dtf_d);
         return ldt;
     }
@@ -157,6 +196,66 @@ public class TimeUtil {
     }
 
     /**
+     * LocalDateTime Convert TimeZone --> new TimeZone Asia/Seoul --> ?
+     * 
+     * @param ldc
+     * @param timezone
+     * @return
+     */
+    public static LocalDateTime convertTimeZoneFromAsia(LocalDateTime ldc, String timezone) {
+        return ldc.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of(timezone)).toLocalDateTime();
+    }
+
+    /**
+     * LocalDateTime Convert TimeZone --> new TimeZone UTC --> ?
+     * 
+     * @param ldc
+     * @param timezone
+     * @return
+     */
+    public static LocalDateTime convertTimeZoneFromUtc(LocalDateTime ldc, String timezone) {
+        return ldc.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of(timezone)).toLocalDateTime();
+    }
+
+    /**
+     * mill --> hour
+     * 
+     * @param mill
+     * @return
+     */
+    public static double millToHour(int mill) {
+        return (mill / (1000 * 60 * 60));
+    }
+
+    /**
+     * hour --> mill
+     * 
+     * @param hour
+     * @return
+     */
+    public static double hourToMill(double hour) {
+        return hour * 3600 * 1000;
+    }
+
+    /**
+     * mill --> 00H 00M
+     * 
+     * @param mill
+     * @return
+     */
+    public static String millToHm(int mill) {
+        try {
+            int hour = (int) (mill / (1000 * 60 * 60));
+            int minute = (int) (mill / (1000 * 60) % 60);
+            return (hour < 10 ? "0" + Integer.toString(hour) : Integer.toString(hour)) + "H" + " "
+                    + (minute < 10 ? "0" + Integer.toString(minute) : Integer.toString(minute)) + "M";
+        } catch (Exception e) {
+            // TODO: handle exception
+            return "00H 00M";
+        }
+    }
+
+    /**
      * LocalDateTime Convert TimeZone --> new TimeZone
      * 
      * @param ldc
@@ -165,6 +264,18 @@ public class TimeUtil {
      */
     public static LocalDateTime convertTimeZone(LocalDateTime ldc, String timezone) {
         return ldc.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of(timezone)).toLocalDateTime();
+    }
+
+    /**
+     * String --> mill
+     * 
+     * @param time
+     * @return
+     */
+    public static long stringToMillisecond(String time) {
+        LocalDateTime localDateTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+        long millis = localDateTime.atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+        return millis;
     }
 
 }
