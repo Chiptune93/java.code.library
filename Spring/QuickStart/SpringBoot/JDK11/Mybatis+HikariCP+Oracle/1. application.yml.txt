@@ -1,0 +1,14 @@
+# /resource/application.yml 
+
+spring:
+    application:
+        name: springboot-project-name
+
+    # DB Connection 
+    datasource:
+        hikari:
+            jdbc-url: jdbc:log4jdbc:oracle:thin:@{oracle-db-url} # ex ) localhost:3306:utf8
+            driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+            username: {user-name}
+            password: {user-password}
+            maximum-pool-size: {connection-pool-size}
