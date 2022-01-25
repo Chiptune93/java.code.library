@@ -1,5 +1,3 @@
-# {package-dir}/config/DBconfig.java
-
 import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariDataSource;
