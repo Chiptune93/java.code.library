@@ -2,9 +2,6 @@
 
 this is sample project of Spring Boot Project
 
-## Features
-
-
 # 2.6.3-Gradle
 
 - open JDK 11
