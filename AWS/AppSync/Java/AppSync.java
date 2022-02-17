@@ -1,4 +1,4 @@
-package com.adt.ACaaS.intAttendance.lib;
+package package;
 
 import java.net.URISyntaxException;
 
