@@ -1,0 +1,10 @@
+spring:
+    application:
+        name: file-upload-test
+    servlet:
+        multipart:
+            location: /Users/dk/Documents/GitHub/Library/Spring/FileUpload/SpringBoot/example/src/main/resources/upload
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp

@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang=ko>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    </head>
+    <body>
+        <div>
+            <form name="form" method="post" action="/upload.do" enctype="multipart/form-data">
+                file upload
+                <br/>
+                <input type="file" name="singleFile" />
+                <button type="submit">submit</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.file'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	// dev tool ( 정적 리소스 재시작없이 적용 )
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
+
+	// jstl 
+	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+
+	// jasper
+	implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '9.0.56'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
