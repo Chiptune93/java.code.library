@@ -8,3 +8,13 @@ spring:
         view:
             prefix: /WEB-INF/views/
             suffix: .jsp
+    datasource:
+        hikari:
+            # connect to host port
+            jdbc-url: jdbc:log4jdbc:postgresql://localhost:5432/postgres
+            # connect to container port
+            #jdbc-url: jdbc:log4jdbc:postgresql://Postgresql/test
+            driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+            username: postgres
+            password: 1tkdlqjvpn!
+            maximum-pool-size: 5

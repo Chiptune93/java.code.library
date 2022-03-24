@@ -14,6 +14,12 @@
                 <input type="file" name="singleFile" />
                 <button type="submit">submit</button>
             </form>
+            <form name="form2" method="post" action="/upload2.do" enctype="multipart/form-data">
+                file upload2
+                <br/>
+                <input type="file" name="singleFile2" />
+                <button type="submit">submit</button>
+            </form>
         </div>
     </body>
 </html>

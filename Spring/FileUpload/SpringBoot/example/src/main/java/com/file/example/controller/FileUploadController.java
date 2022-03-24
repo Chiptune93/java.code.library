@@ -18,4 +18,9 @@ public class FileUploadController {
         System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + req + "＃＃＃＃＃＃＃＃＃＃＃");
         fsvc.save(req);
     }
+    @PostMapping("/upload2.do")
+    public void upload2(MultipartRequest req) {
+        System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + req + "＃＃＃＃＃＃＃＃＃＃＃");
+        fsvc.save2(req);
+    }
 }

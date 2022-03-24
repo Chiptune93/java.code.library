@@ -26,6 +26,15 @@ dependencies {
 
 	// jasper
 	implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '9.0.56'
+
+	// mybatis-spring-boot
+	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.1.4'
+
+	// jdbc ( postgresql - jdbc driver )
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.1'
+
+	// log4j2
+	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'   
 }
 
 tasks.named('test') {
