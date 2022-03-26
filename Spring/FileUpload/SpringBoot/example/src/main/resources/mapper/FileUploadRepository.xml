@@ -8,12 +8,14 @@
             ,file_path
             ,file_type
             ,file_size
+            ,file_ext
         ) values (
             nextval('seq')
             ,#{fileName}
             ,#{filePath}
             ,#{fileType}
             ,#{fileSize}
+            ,#{fileExt}
         )
         returning currval('seq')
     </select>

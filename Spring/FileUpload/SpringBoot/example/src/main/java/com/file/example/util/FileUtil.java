@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -18,13 +19,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 파일 유틸 클래스
+ */
 @Component
 public class FileUtil {
+    // 서버 업로드 경로
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
 
+    // 최대 파일 크기
     private long MAX_SIZE = 52428800;
 
+    // 파일 정보 저장 시, 레파지토리
     @Autowired
     FileUploadRepository rpt;
 
@@ -74,7 +81,6 @@ public class FileUtil {
         HashMap<String, String> result = new HashMap<String, String>();
         // 파일 정보
         String fileName = file.getOriginalFilename();
-        System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + fileName + "＃＃＃＃＃＃＃＃＃＃＃");
         String fileSize = Long.toString(file.getSize());
         String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
         String fileType = file.getContentType();
@@ -88,14 +94,21 @@ public class FileUtil {
         if (file.getSize() > MAX_SIZE) {
             status = "fail";
             message = "file over max upload size";
+            result.put("status", status);
+            result.put("message", message);
+            return result;
         }
 
         // 2. 파일 확장자
-        System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + fileType + "＃＃＃＃＃＃＃＃＃＃＃");
-        // if(!Arrays.asList("").contains(fileType)) {
-        // status = "fail";
-        // message = "file type is not allowed";
-        // }
+        // 화이트 리스트 방식으로 파일 확장자 체크
+        if (!Arrays.asList("jpg", "png", "gif", "jpeg", "bmp", "xlsx", "ppt", "pptx", "txt", "hwp")
+                .contains(fileType.toLowerCase())) {
+            status = "fail";
+            message = "file type is not allowed";
+            result.put("status", status);
+            result.put("message", message);
+            return result;
+        }
 
         // 3. 저장 파일 이름 랜덤화
         String tempName = fileName.substring(0, fileName.lastIndexOf("."));
@@ -112,10 +125,7 @@ public class FileUtil {
         fileInfo.put("fileExt", fileExt);
         fileInfo.put("fileType", fileType);
         fileInfo.put("filePath", filePath);
-
-        System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] fileInfo: " + fileInfo + "＃＃＃＃＃＃＃＃＃＃＃");
-        System.out.println(
-                "＃＃＃＃＃＃＃＃＃＃＃ [LOG] path.resolve(encFileName): " + path.resolve(encFileName).toString() + "＃＃＃＃＃＃＃＃＃＃＃");
+        
         try {
             InputStream is = file.getInputStream();
             Files.copy(is, path.resolve(encFileName + "." + fileExt), StandardCopyOption.REPLACE_EXISTING);
