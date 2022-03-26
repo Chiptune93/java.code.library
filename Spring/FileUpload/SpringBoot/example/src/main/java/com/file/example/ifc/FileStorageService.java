@@ -1,14 +1,17 @@
 package com.file.example.ifc;
 
+import java.util.HashMap;
+
 import org.springframework.web.multipart.MultipartRequest;
 
 public interface FileStorageService {
     void init();
-    
+
     /**
      * Basic File Upload
      * jsp form --> multipartRequest
-     * Server File Dir upload 
+     * Server File Dir upload
+     * 
      * @param req
      */
     void save(MultipartRequest req);
@@ -18,5 +21,13 @@ public interface FileStorageService {
      * upload 1 + file information + insert DB
      */
     void save2(MultipartRequest req);
+
+    /**
+     * File Upload 3
+     * upload2 + exception + functionalize
+     * 
+     * @param req
+     */
+    HashMap<String, String> save3(MultipartRequest req);
 
 }

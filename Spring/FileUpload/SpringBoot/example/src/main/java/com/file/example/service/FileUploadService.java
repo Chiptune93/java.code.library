@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import com.file.example.ifc.FileStorageService;
 import com.file.example.repository.FileUploadRepository;
+import com.file.example.util.FileUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +26,17 @@ public class FileUploadService implements FileStorageService {
     @Autowired
     FileUploadRepository rpt;
 
+    @Autowired
+    FileUtil fu;
+
     @Override
     public void init() {
 
     }
 
+    /**
+     * 파일업로드1
+     */
     @Override
     public void save(MultipartRequest req) {
         MultipartFile file = req.getFile("singleFile");
@@ -58,6 +65,9 @@ public class FileUploadService implements FileStorageService {
         }
     }
 
+    /**
+     * 파일업로드2
+     */
     @Override
     public void save2(MultipartRequest req) {
         MultipartFile file = req.getFile("singleFile2");
@@ -85,7 +95,7 @@ public class FileUploadService implements FileStorageService {
             String fileType = file.getContentType();
             String filePath = uploadPath + "/" + fileName;
 
-            HashMap<String,String> fileMap = new HashMap<String,String>();
+            HashMap<String, String> fileMap = new HashMap<String, String>();
             fileMap.put("fileName", fileName);
             fileMap.put("fileSize", fileSize);
             fileMap.put("fileType", fileType);
@@ -96,6 +106,15 @@ public class FileUploadService implements FileStorageService {
         } catch (Exception e) {
             throw new RuntimeException("ERROR : can't save file !");
         }
+    }
+
+    @Override
+    public HashMap<String, String> save3(MultipartRequest req) {
+        HashMap<String, String> result = new HashMap<String, String>();
+        MultipartFile file = req.getFile("singleFile3");
+        Path uploadPath = fu.getUploadPath("image");
+        result = fu.upload(file, uploadPath);
+        return result;
     }
 
 }

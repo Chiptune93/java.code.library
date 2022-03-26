@@ -1,5 +1,7 @@
 package com.file.example.controller;
 
+import java.util.HashMap;
+
 import com.file.example.service.FileUploadService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,36 @@ public class FileUploadController {
     @Autowired
     FileUploadService fsvc;
 
+    /**
+     * 파일업로드1 - 단순 파일 서버 경로(프로젝트 경로) 업로드
+     * 
+     * @param req
+     */
     @PostMapping("/upload.do")
     public void upload(MultipartRequest req) {
         System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + req + "＃＃＃＃＃＃＃＃＃＃＃");
         fsvc.save(req);
     }
+
+    /**
+     * 파일업로드2 - 서버에 업로드 후, 파일 정보 DB 저장
+     * 
+     * @param req
+     */
     @PostMapping("/upload2.do")
     public void upload2(MultipartRequest req) {
         System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + req + "＃＃＃＃＃＃＃＃＃＃＃");
         fsvc.save2(req);
+    }
+
+    /**
+     * 파일업로드3 - 서버에 업로드 후, 파일 정보 DB 저장 및 예외 처리 등
+     * 
+     * @param req
+     */
+    @PostMapping("/upload3.do")
+    public HashMap<String, String> upload3(MultipartRequest req) {
+        System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + req + "＃＃＃＃＃＃＃＃＃＃＃");
+        return fsvc.save3(req);
     }
 }

@@ -20,6 +20,12 @@
                 <input type="file" name="singleFile2" />
                 <button type="submit">submit</button>
             </form>
+            <form name="form3" method="post" action="/upload3.do" enctype="multipart/form-data">
+                file upload3
+                <br/>
+                <input type="file" name="singleFile3" />
+                <button type="submit">submit</button>
+            </form>
         </div>
     </body>
 </html>
