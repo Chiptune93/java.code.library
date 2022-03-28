@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.file.example.repository.FileUploadRepository">
+    
     <select id="insertFile" parameterType="HashMap" resultType="int">
         insert into file (
             seq
@@ -19,4 +20,15 @@
         )
         returning currval('seq')
     </select>
+
+    <select id="info" parameterType="int" resultType="HashMap">
+        select
+            *
+        from
+            file
+        where
+            1=1
+            and seq = #{seq}
+    </select>
+
 </mapper>

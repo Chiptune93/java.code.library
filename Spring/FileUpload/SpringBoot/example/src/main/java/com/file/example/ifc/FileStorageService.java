@@ -2,6 +2,8 @@ package com.file.example.ifc;
 
 import java.util.HashMap;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartRequest;
 
 public interface FileStorageService {
@@ -29,5 +31,13 @@ public interface FileStorageService {
      * @param req
      */
     HashMap<String, String> save3(MultipartRequest req);
+
+    /**
+     * File Download
+     * 
+     * @param Seq
+     * @return
+     */
+    ResponseEntity<Resource> download(String seq);
 
 }

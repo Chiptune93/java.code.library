@@ -13,6 +13,8 @@ import com.file.example.util.FileUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
@@ -108,6 +110,9 @@ public class FileUploadService implements FileStorageService {
         }
     }
 
+    /**
+     * 파일업로드3
+     */
     @Override
     public HashMap<String, String> save3(MultipartRequest req) {
         HashMap<String, String> result = new HashMap<String, String>();
@@ -115,6 +120,13 @@ public class FileUploadService implements FileStorageService {
         Path uploadPath = fu.getUploadPath("image");
         result = fu.upload(file, uploadPath);
         return result;
+    }
+
+    /**
+     * 파일 다운로드
+     */
+    public ResponseEntity<Resource> download(String seq) {
+        return fu.fileDownload(seq);
     }
 
 }

@@ -26,6 +26,7 @@
                 <input type="file" name="singleFile3" />
                 <button type="submit">submit</button>
             </form>
+            <a id="download" href="/download.do?seq=4">다운로드</a>
         </div>
     </body>
 </html>

@@ -2,6 +2,7 @@ package com.file.example.util;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +17,12 @@ import com.file.example.repository.FileUploadRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -102,7 +109,7 @@ public class FileUtil {
         // 2. 파일 확장자
         // 화이트 리스트 방식으로 파일 확장자 체크
         if (!Arrays.asList("jpg", "png", "gif", "jpeg", "bmp", "xlsx", "ppt", "pptx", "txt", "hwp")
-                .contains(fileType.toLowerCase())) {
+                .contains(fileExt.toLowerCase())) {
             status = "fail";
             message = "file type is not allowed";
             result.put("status", status);
@@ -113,21 +120,30 @@ public class FileUtil {
         // 3. 저장 파일 이름 랜덤화
         String tempName = fileName.substring(0, fileName.lastIndexOf("."));
         String encFileName = Base64.getEncoder().encodeToString(tempName.getBytes());
+        System.out.println("File: FileUtil.java ~ line: (116)  ---> encFileName: " + encFileName);
         // 암호화된 경로로 패스 설정
         filePath = path.toString() + File.separator + encFileName + "." + fileExt;
+        System.out.println("File: FileUtil.java ~ line: (119)  ---> filePath: " + filePath);
 
         // 4. 파일정보 맵에 담기.
         HashMap<String, String> fileInfo = new HashMap<String, String>();
 
         fileInfo.put("fileName", fileName);
         fileInfo.put("encFileName", encFileName);
+        System.out.println("File: FileUtil.java ~ line: (126)  ---> encFileName: " + encFileName);
         fileInfo.put("fileSize", fileSize);
         fileInfo.put("fileExt", fileExt);
         fileInfo.put("fileType", fileType);
         fileInfo.put("filePath", filePath);
-        
+
         try {
             InputStream is = file.getInputStream();
+            System.out.println(
+                    "File: FileUtil.java ~ line: (135)  ---> path : " + path.resolve(encFileName + "." + fileExt));
+            System.out.println(
+                    "File: FileUtil.java ~ line: (135)  ---> path : " + path.resolve(encFileName + "." + fileExt));
+            System.out.println(
+                    "File: FileUtil.java ~ line: (135)  ---> path : " + path.resolve(encFileName + "." + fileExt));
             Files.copy(is, path.resolve(encFileName + "." + fileExt), StandardCopyOption.REPLACE_EXISTING);
 
             // 파일 저장에 성공하면 DB에 저장하기
@@ -143,5 +159,46 @@ public class FileUtil {
         result.put("status", status);
         result.put("message", message);
         return result;
+    }
+
+    /**
+     * 파일 다운로드 하기
+     * 
+     * @param seq
+     * @return
+     */
+    public ResponseEntity<Resource> fileDownload(String seq) {
+
+        /* 추가 되어야 할 구간 */
+        /* Front 암호화 시퀀스 --> Back 복호화하여 조회 */
+        /* 추가 되어야 할 구간 */
+
+        // 파일 정보 가져오기
+        HashMap<String, String> fileInfo = rpt.info(Integer.parseInt(seq));
+        // 파일이 없을 경우 예외처리
+        if (fileInfo == null) {
+            // 파일 정보가 없는경우 404 에러 발생.
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            // 가져온 파일 정보에 따라, 가져올 경로 설정
+            Path path = Paths.get(fileInfo.get("file_path").toString());
+
+            // Response 설정.
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDisposition(ContentDisposition.builder("attachment")
+                    .filename(fileInfo.get("file_name").toString(), StandardCharsets.UTF_8).build());
+            headers.add(HttpHeaders.CONTENT_TYPE, fileInfo.get("file_type").toString());
+            headers.add(HttpHeaders.CONTENT_LENGTH, fileInfo.get("file_size").toString());
+
+            Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+            // 파일 존재하는 경우, 정상 응답
+            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            // 처리 중, 오류 발생 시 500 에러 발생.
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

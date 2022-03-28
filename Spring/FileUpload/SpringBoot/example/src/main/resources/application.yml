@@ -3,7 +3,8 @@ spring:
         name: file-upload-test
     servlet:
         multipart:
-            location: /Users/dk/Documents/GitHub/Library/Spring/FileUpload/SpringBoot/example/src/main/resources/upload
+            #location: /Users/dk/Documents/GitHub/Library/Spring/FileUpload/SpringBoot/example/src/main/resources/upload
+            location: C:\Users\syworks\Desktop\Library\Spring\FileUpload\SpringBoot\example\src\main\resources\upload
             # 서블릿 옵션으로 파일 용량 제한 거는 방법
             # 구체적으로 컨트롤 하기 위해 업로드 시 제한하는 것으로 수정
             #max-file-size: 2MB

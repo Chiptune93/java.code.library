@@ -12,4 +12,6 @@ public interface FileUploadRepository {
     int insertFile(HashMap<String, String> parameterMap);
 
     int deleteFile(HashMap<String, String> parameterMap);
+
+    HashMap<String, String> info(int seq);
 }

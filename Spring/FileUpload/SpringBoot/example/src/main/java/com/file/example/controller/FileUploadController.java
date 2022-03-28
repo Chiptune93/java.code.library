@@ -1,16 +1,33 @@
 package com.file.example.controller;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import com.file.example.service.FileUploadService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartRequest;
 
 @RestController
 public class FileUploadController {
+
+    @Autowired
+    ResourceLoader resourceLoader;
 
     @Autowired
     FileUploadService fsvc;
@@ -47,4 +64,18 @@ public class FileUploadController {
         System.out.println("＃＃＃＃＃＃＃＃＃＃＃ [LOG] : " + req + "＃＃＃＃＃＃＃＃＃＃＃");
         return fsvc.save3(req);
     }
+
+    /**
+     * 파일 다운로드 - DB 저장된 정보 기반으로 파일 다운로드
+     * 
+     * @param seq
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/download.do")
+    @PostMapping("/download.do")
+    public ResponseEntity<Resource> download(@RequestParam String seq) throws IOException {
+        return fsvc.download(seq);
+    }
+
 }
