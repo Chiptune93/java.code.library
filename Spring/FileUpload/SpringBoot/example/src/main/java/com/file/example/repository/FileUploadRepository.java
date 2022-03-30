@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FileUploadRepository {
+    int getMasterSeq();
+
     List<HashMap<String, String>> fileList(HashMap<String, String> parameterMap);
 
     int insertFile(HashMap<String, String> parameterMap);

@@ -162,6 +162,89 @@ public class FileUtil {
     }
 
     /**
+     * 파일 다중 업로드
+     * 
+     * @param file
+     * @param path
+     * @param masterSeq
+     * @return
+     */
+    public HashMap<String, String> multipleUpload(MultipartFile file, Path path, int masterSeq) {
+        HashMap result = new HashMap();
+        // 파일 정보
+        String fileName = file.getOriginalFilename();
+        String fileSize = Long.toString(file.getSize());
+        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String fileType = file.getContentType();
+        String filePath = "";
+        // 결과 정보
+        String status = "";
+        String message = "";
+        String fileSeq = "";
+        // 예외처리 하기
+
+        // 1. 파일 사이즈
+        if (file.getSize() > MAX_SIZE) {
+            status = "fail";
+            message = "file over max upload size";
+            result.put("status", status);
+            result.put("message", message);
+            return result;
+        }
+
+        // 2. 파일 확장자
+        // 화이트 리스트 방식으로 파일 확장자 체크
+        if (!Arrays.asList("jpg", "png", "gif", "jpeg", "bmp", "xlsx", "ppt", "pptx", "txt", "hwp")
+                .contains(fileExt.toLowerCase())) {
+            status = "fail";
+            message = "file type is not allowed";
+            result.put("status", status);
+            result.put("message", message);
+            return result;
+        }
+
+        // 3. 저장 파일 이름 랜덤화
+        String tempName = fileName.substring(0, fileName.lastIndexOf("."));
+        String encFileName = Base64.getEncoder().encodeToString(tempName.getBytes());
+        // 암호화된 경로로 패스 설정
+        filePath = path.toString() + File.separator + encFileName + "." + fileExt;
+
+        // 4. 파일정보 맵에 담기.
+        HashMap fileInfo = new HashMap<String, String>();
+        HashMap<String, String> uploadedFileInfo = new HashMap<String, String>();
+
+        fileInfo.put("fileName", fileName);
+        fileInfo.put("encFileName", encFileName);
+        fileInfo.put("fileSize", fileSize);
+        fileInfo.put("fileExt", fileExt);
+        fileInfo.put("fileType", fileType);
+        fileInfo.put("filePath", filePath);
+        fileInfo.put("fileMasterSeq", masterSeq);
+
+        try {
+            InputStream is = file.getInputStream();
+            Files.copy(is, path.resolve(encFileName + "." + fileExt), StandardCopyOption.REPLACE_EXISTING);
+
+            // 파일 저장에 성공하면 DB에 저장하기
+            fileSeq = Integer.toString(rpt.insertFile(fileInfo));
+            uploadedFileInfo = rpt.info(Integer.parseInt(fileSeq));
+
+            status = "success";
+            message = "upload complete";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            status = "fail";
+            message = "upload fail";
+        }
+        result.put("status", status);
+        result.put("message", message);
+        result.put("fileMasterSeq", masterSeq);
+        result.put("fileInfo", uploadedFileInfo);
+        return result;
+    }
+
+    /**
      * 파일 다운로드 하기
      * 
      * @param seq
@@ -200,5 +283,15 @@ public class FileUtil {
             // 처리 중, 오류 발생 시 500 에러 발생.
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * 파일 업로드 마스터 시퀀스 구하기
+     * 
+     * @return
+     */
+    public int getMasterSeq() {
+        int masterSeq = rpt.getMasterSeq();
+        return masterSeq;
     }
 }

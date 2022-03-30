@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import com.file.example.ifc.FileStorageService;
 import com.file.example.repository.FileUploadRepository;
@@ -119,6 +122,32 @@ public class FileUploadService implements FileStorageService {
         MultipartFile file = req.getFile("singleFile3");
         Path uploadPath = fu.getUploadPath("image");
         result = fu.upload(file, uploadPath);
+        return result;
+    }
+
+    /**
+     * 파일업로드4
+     * 
+     * @param files
+     * @return
+     */
+    @Override
+    public HashMap save4(MultipartFile[] files) {
+        // 최종 결과 담을 맵 객체
+        HashMap result = new HashMap();
+        // 업로드된 파일 리스트 객체
+        List<HashMap> uploadFileList = new ArrayList<HashMap>();
+        // 업로드 경로 설정
+        Path uploadPath = fu.getUploadPath("image");
+        // 다중 파일 업로드 관리를 위한 master file seq
+        int masterSeq = fu.getMasterSeq();
+        // Array 반복 하여 파일 업로드 실행
+        Arrays.asList(files).stream().forEach(file -> {
+            uploadFileList.add(fu.multipleUpload(file, uploadPath, masterSeq));
+        });
+        // 결과를 담아 result 리턴.
+        result.put("fileMasterSeq", masterSeq);
+        result.put("uploadFileList", uploadFileList);
         return result;
     }
 
