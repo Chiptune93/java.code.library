@@ -1,13 +1,13 @@
-# Library From DK
+# Library From Chiptune93
 
-Source Code Example via My Work
+Useful methods & class in my case.
 
-# Start from 2021.05.10
-
-# list (updated 2022.01.27)
-1. AgentCheck : check user agent 
-2. Encrypt&Decrypt : front enc > back dec Encrypt Module
-3. Spring : Spring Framework Example & Library
-4. UtilClass : java util class
-5. xlsx-js-style : html table > excel js library 
-6. AWS : Aws Example ( since 2022.01.01 )
+1. AgentCheck
+    - user-agent check method
+2. Encrypt&Decrypt
+    - frontend encrypt > backend decrypt
+3. UtilClass
+    - DateUtil.java : methods for date
+    - JavaUtil.java : methods for common things
+    - TimeUtil.java : methods for time
+    - util.js : date & time for javascript
