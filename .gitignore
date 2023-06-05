@@ -25,3 +25,7 @@ hs_err_pid*
 # My Personal Type 
 MyMap.java
 MyCamelMap.java
+
+# intelliJ
+.idea
+.iml
