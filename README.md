@@ -15,3 +15,5 @@ Useful methods & class in my case.
    - [opengraph](https://ogp.me/) library
 5. httpClient
    - Http Request GET/POST (jdk 8,11)
+6. Algorithm
+   - bunch of algorithm stuff 
