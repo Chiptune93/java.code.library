@@ -1,5 +1,11 @@
-import java.util.*;
+package DFS;
 
+/**
+ * DFS 이분 트리 검색
+ *
+ * @author dk
+ * @since 2023.06.06
+ */
 public class DFS_BinaryTreeSearch {
 
     static class Node {

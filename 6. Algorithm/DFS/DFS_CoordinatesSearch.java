@@ -1,11 +1,14 @@
+package DFS;
+
 import java.util.*;
 
 /**
  * DFS 4방향 좌표 탐색
  * main -> 7*7 2차원 배열에서 출발 -> 도착까지 갈 수 있는 경우의 수를 구하기
+ *
  * @author dk
- * @since 2023.05.27
  * @ref https://chiptune93.github.io/posts/algorithm77/
+ * @since 2023.05.27
  */
 class DFS_CoordinatesSearch {
     static int[] dx = {-1, 0, 1, 0};

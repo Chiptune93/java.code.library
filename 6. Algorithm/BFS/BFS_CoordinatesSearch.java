@@ -1,11 +1,14 @@
+package BFS;
+
 import java.util.*;
 
 /**
  * BFS 8방향 좌표 탐색
  * main -> 주어진 배열 내에서 조건에 맞게 찾는다. 큐를 활용한다.
+ *
  * @author dk
- * @since 2023.05.27
  * @ref https://chiptune93.github.io/posts/algorithm80/
+ * @since 2023.05.27
  */
 class BFS_CoordinatesSearch {
     // 좌표 클래스

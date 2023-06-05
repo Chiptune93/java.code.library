@@ -1,7 +1,10 @@
+package Sorting;
+
 import java.util.*;
 
 /**
  * Least Recently Used -> Insert Sort Algorithm
+ * 최소 사용 찾기 , 삽입 정렬 사용
  *
  * @author dk
  * @since 2023.06.06

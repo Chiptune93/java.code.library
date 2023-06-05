@@ -1,27 +1,30 @@
+package Sorting;
+
 import java.util.*;
 
 /**
- * Bubble Sort Algorithm
- * @since 2023.06.06
+ * Selection Sort Algorithm
+ * 삽입 정렬 알고리즘
+ *
  * @author dk
+ * @since 2023.06.06
  */
-
-class BubbleSort {
+class SelectionSort {
     public int[] solution(int n, int[] arr) {
         for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int tmp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = tmp;
-                }
+            int idx = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[idx]) idx = j;
             }
+            int tmp = arr[i];
+            arr[i] = arr[idx];
+            arr[idx] = tmp;
         }
         return arr;
     }
 
     public static void main(String[] args) {
-        BubbleSort T = new BubbleSort();
+        SelectionSort T = new SelectionSort();
         Scanner kb = new Scanner(System.in);
         int n = kb.nextInt();
         int[] arr = new int[n];
@@ -29,4 +32,3 @@ class BubbleSort {
         for (int x : T.solution(n, arr)) System.out.print(x + " ");
     }
 }
-

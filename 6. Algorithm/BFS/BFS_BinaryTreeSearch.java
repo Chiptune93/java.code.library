@@ -1,6 +1,13 @@
+package BFS;
+
 import java.util.*;
 
-
+/**
+ * BFS 이분 트리 검색
+ *
+ * @author dk
+ * @since 2023.06.06
+ */
 public class BFS_BinaryTreeSearch {
 
     static class Node {

@@ -1,7 +1,8 @@
 import java.util.*;
 
 /**
- * Union & Find
+ * Union & Find 활용 방법
+ *
  * @author dk
  * @since 2023.05.30
  */

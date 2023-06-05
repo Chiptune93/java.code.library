@@ -1,7 +1,10 @@
+package Sorting;
+
 import java.util.*;
 
 /**
  * Binary Search
+ * 이분 검색
  *
  * @author dk
  * @since 2023.06.06

@@ -1,3 +1,5 @@
+package Sorting;
+
 import java.util.*;
 
 /**
@@ -5,10 +7,10 @@ import java.util.*;
  * @since 2023.06.06
  * @author dk
  */
-import java.util.*;
 
 /**
  * Insert Sort Algorithm
+ * 삽입 정렬 알고리즘
  *
  * @author dk
  * @since 2023.06.06
