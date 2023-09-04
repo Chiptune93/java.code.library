@@ -18,4 +18,8 @@ Useful methods & class in my case.
 6. Algorithm
    - bunch of algorithm stuff 
 7. Example
-   - Java Examples 
+   - Java Examples
+8. Stream.java8
+   - Representative example of Java 8 Stream API
+   - Stream Operation Order : Making -> Intermediate -> Final
+   - Type Conversion Examples
